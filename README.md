@@ -1,9 +1,9 @@
 # P2P_project
 
-Projet réalisé par : 
+Projet réalisé par :
+- Jean-Baptiste Lacour
 - Rémi Grison
 - Emeric Guerin 
-- Jean-Baptiste Lacour
 
 Encadré par M. Loïg Jezequel.
 
