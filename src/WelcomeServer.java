@@ -19,7 +19,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class WelcomeServer {
+public class WelcomeServer implements Server {
 
 	// Parsing d'une chaîne de caractères pour trouver un entier
 	// En cas d'erreur l'entier retourné est négatif
@@ -58,16 +58,8 @@ public class WelcomeServer {
 
 	}
 
-	public static void main(String[] args) {
-		// Il faut deux arguments : le numéro de port et la taille max du réseau
-		if (args.length != 2) {
-			System.err
-					.println("Usage: java WelcomeServer <port number> <size>");
-			System.exit(1);
-		}
-		int portNumber = Integer.parseInt(args[0]);
-		int size = Integer.parseInt(args[1]);
-
+	@Override
+	public static void recoitDemandeDeCommunication(int portNumber, int size) {
 		// Table de hachage contenant les infos sur les pairs présents dans le
 		// réseau
 		// clé : hash, valeur : ip
@@ -77,6 +69,8 @@ public class WelcomeServer {
 		// Tout ce qui est dans ce bloc sera fermé automatiquement à la fin du
 		// try
 		ServerSocket serverSock = new ServerSocket(portNumber);) {
+
+		System.out.println("Message de WelcomeServer : lancé");
 
 			while (true) {
 				try (
@@ -220,5 +214,15 @@ public class WelcomeServer {
 			System.err.println(e.getMessage());
 			System.exit(1);
 		}
+	}
+
+	public static void main(String[] args) {
+		// Il faut deux arguments : le numéro de port et la taille max du réseau
+		if (args.length != 2) {
+			System.err
+					.println("Usage: java WelcomeServer <port number> <size>");
+			System.exit(1);
+		}
+		WelcomeServer.recoitDemandeDeCommunication(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 	}
 }

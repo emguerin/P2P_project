@@ -2,15 +2,16 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-public class ClientLambda {
-    private int    port;
-    private String adresseServeur;
+public class ClientWelcomeServer implements Client {
+    protected int    port;
+    protected String adresseServeur;
 
-    public ClientLambda(int port, String adresseServeur) {
+    public ClientWelcomeServer(int port, String adresseServeur) {
         this.port           = port;
         this.adresseServeur = adresseServeur;
     }
 
+    @Override
     public void communiquer() {
         Socket sock = etablirConnexion();
 
@@ -32,23 +33,33 @@ public class ClientLambda {
         PrintWriter    sortie = new PrintWriter(fluxSortie, true);
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Rentrez le message que vous voulez envoyer :");
+        System.out.println("Demandez à entrer dans le réseau P2P en envoyant un message de la forme yo:hash(ip):ip");
 
         String msg;
         String entreeLue;
-        while (true) {
-            msg = sc.nextLine();
+        
+        msg = sc.nextLine();
 
-            // On écrit sur la sortie
-            sortie.println(msg);
+        // On écrit sur la sortie
+        sortie.println(msg);
 
-            entreeLue = this.lireMessage(entree);
-            System.out.println(entreeLue);
+        entreeLue = this.lireMessage(entree);
+
+        System.out.println("Message retourné par le serveur Welcome : "+entreeLue);
+
+        if(entreeLue.equals("wrq")) {
+            AppliClient.wrq = true;
         }
+
+        /*
+        * Si on recoit le msg yaf, alors on dit que succ est lui-même
+        *
+        * Sinon, on recoit l'IP du successeur comme message (au lieu de yaf) et on doit la conserver pour créer la 
+        * table de routage du pair (création du pair dans ApplicationClient une fois la communication terminée avec WelcomeServer)
+        */
     }
 
-
-
+    @Override
     public Socket etablirConnexion() {
 	       Socket sock = null;
            try {
@@ -62,7 +73,7 @@ public class ClientLambda {
            return sock;
     }
 
-
+    @Override
     public String lireMessage(BufferedReader entree) {
         String entreeLue = "";
         try {
