@@ -5,6 +5,9 @@
 // Les imports nécessaires
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class MoniteurComm implements Runnable {
     // Attributs de la classe
@@ -31,6 +34,36 @@ public class MoniteurComm implements Runnable {
     }
 
 
+
+    /*
+     * Fonction pour retourner les pairs que l'on connaît (dans tableRoutage)
+     * sous la forme hash:hash(succ):ip(succ)
+     */
+    private List<String> donnerPairs() {
+        List<String> lesPairs = new ArrayList<String>();
+        Set<Integer> pairsConnus = this.tableRoutage.keySet();
+
+        String tmp;
+        Map<Integer, String> mapTmp;
+        Integer elem2;
+        String elem3;
+        for (Integer i: pairsConnus) {
+            mapTmp = this.tableRoutage.get(i);
+
+            elem2 = (Integer)mapTmp.keySet().toArray()[0]; // récup du hash du successeur
+            elem3 = (String)mapTmp.values().toArray()[0]; // récup de l'IP du successeur
+
+            // Constitution de la chaîne au format correct
+            tmp = new String();
+            tmp += i + ":" + elem2 + ":" + elem3;
+
+            lesPairs.add(tmp);
+        }
+
+        return lesPairs;
+    }
+
+
     /**
      * Implémentation de la méthode run() de l'interface Runnable
      * permet de gérer la communication avec le MonitorServer
@@ -42,13 +75,21 @@ public class MoniteurComm implements Runnable {
         ) {
             try (
             Socket s = serveur.accept();
-
             // Déclaration des canaux de sortie et d'entrée
             PrintWriter out = new PrintWriter(s.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            ) {
-                
-            } catch (IOException) {
+            )
+            {
+                String messageRecu = in.readLine();
+                if (messageRecu != null messageRecu.equals("rt?")) {
+                    List<String> pairsConnus = this.donnerPairs();
+                    for (String s: pairsConnus) {
+                        out.println(s);
+                    }
+                }
+            }
+            catch (IOException)
+            {
                 System.err.println("Erreur pendant la communication avec le MonitorServer.");
                 System.err.println(ioe.getMessage());
             }
