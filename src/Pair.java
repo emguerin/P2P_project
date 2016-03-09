@@ -67,7 +67,7 @@ public class Pair implements Runnable {
             try {
                 sock = serverSock.accept();
                 //à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
-                Thread th = new Thread(new PairThread());
+                Thread th = new Thread(new PairThread(this.tableRoutage, sock));
                 th.start(); 
             } catch (IOException e) {
                 e.printStackTrace();
