@@ -81,14 +81,14 @@ public class MoniteurComm implements Runnable {
             )
             {
                 String messageRecu = in.readLine();
-                if (messageRecu != null messageRecu.equals("rt?")) {
+                if (messageRecu != null && messageRecu.equals("rt?")) {
                     List<String> pairsConnus = this.donnerPairs();
                     for (String s: pairsConnus) {
                         out.println(s);
                     }
                 }
             }
-            catch (IOException)
+            catch (IOException ioe)
             {
                 System.err.println("Erreur pendant la communication avec le MonitorServer.");
                 System.err.println(ioe.getMessage());
