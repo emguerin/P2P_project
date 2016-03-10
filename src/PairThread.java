@@ -117,6 +117,7 @@ public class PairThread implements Runnable {
 					    	}
 					    	else {
 					    		System.out.println("Message reçu : " + words[1]);
+					    		out.println("message reçu");
 					    	}
 
 							break;
