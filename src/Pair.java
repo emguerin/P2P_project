@@ -65,7 +65,7 @@ public class Pair implements Runnable {
             ServerSocket serverSock = new ServerSocket(this.port);
             //récupération des demandes client
             Socket sock;
-            while(1) {
+            while(true) {
                 try {
                     sock = serverSock.accept();
                     //à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())

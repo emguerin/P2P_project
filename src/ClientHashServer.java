@@ -49,6 +49,8 @@ public class ClientHashServer {
         if(entreeLue.equals("aht")) {
             AppliClient.aht = true;
         }
+
+        return this.safeParseInt(entreeLue);
     }
 
     public Socket etablirConnexion() {
@@ -75,4 +77,17 @@ public class ClientHashServer {
     }
 
 
+    // Parsing d'une chaîne de caractères pour trouver un entier
+    // En cas d'erreur l'entier retourné est négatif
+    private static int safeParseInt(String i) {
+
+        int res = -1;
+
+        try {
+            res = Integer.parseInt(i);
+        } finally {
+            return res;
+        }
+
+    }
 }
