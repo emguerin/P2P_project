@@ -40,6 +40,23 @@ public class MoniteurComm implements Runnable {
     }
 
 
+    public int getPort() {
+        return this.port;
+    }
+
+    public void setPort(int p) {
+        this.port = p;
+    }
+
+    public Map<Integer, Map<Integer, String>> getTableRoutage() {
+        return this.tableRoutage;
+    }
+
+    public void setTableRoutage(Map<Integer, Map<Integer, String>> tr) {
+        this.tableRoutage = tr;
+    }
+
+
 
     /*
      * Fonction pour retourner les pairs que l'on connaît (dans tableRoutage)
