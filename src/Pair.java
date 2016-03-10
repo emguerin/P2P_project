@@ -126,6 +126,8 @@ public class Pair implements Runnable {
             *
             *- soit ce n'est pas lui et le résultat de la communication une fois terminée est l'ip du successeur du successeur et on boucle ainsi sur les différents succ
             */
+            
+            /*
             if(h == hash du prédecesseur) {
                 clPair = new ClientPair(this.port, ipPred);
             } else {
@@ -136,7 +138,7 @@ public class Pair implements Runnable {
                         "dest trouvé"
                     }
                 }
-            }
+            }*/
         }
 
     }
