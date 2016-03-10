@@ -11,7 +11,7 @@ public class ClientHashServer {
         this.adresseServeur = adresseServeur;
     }
 
-    public void communiquer() {
+    public int communiquer() {
         Socket sock = etablirConnexion();
 
         /*

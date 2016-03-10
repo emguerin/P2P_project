@@ -1,3 +1,9 @@
+import java.util.Map;
+import java.net.Socket;
+import java.net.*;
+import java.util.Scanner;
+import java.io.IOException;
+
 public class Pair implements Runnable {
 
     public static boolean aht = false;    
@@ -57,22 +63,21 @@ public class Pair implements Runnable {
         //écoute du port 
         try {
             ServerSocket serverSock = new ServerSocket(this.port);
+            //récupération des demandes client
+            Socket sock;
+            while(1) {
+                try {
+                    sock = serverSock.accept();
+                    //à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
+                    Thread th = new Thread(new PairThread(this.tableRoutage, sock));
+                    th.start(); 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        
-        //récupération des demandes client
-        Socket sock;
-        while(1) {
-            try {
-                sock = serverSock.accept();
-                //à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
-                Thread th = new Thread(new PairThread(this.tableRoutage, sock));
-                th.start(); 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        }        
     } 
 
 
@@ -107,7 +112,7 @@ public class Pair implements Runnable {
         String ip;
         int h;
         ClientPair clPair;
-        while(1) {
+        while(true) {
             System.out.println("Quelle pair souhaitez-vous contacter (donnez une adresse IP) ?");
             ip = sc.nextLine();
             //récupération du hash du pair destinataire

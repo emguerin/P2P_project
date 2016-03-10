@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+import java.util.Map;
 
 public class ClientWelcomeServer {
     protected int    port;
@@ -11,7 +12,7 @@ public class ClientWelcomeServer {
         this.adresseServeur = adresseServeur;
     }
 
-    public void communiquer() {
+    public Map<Integer, Map<Integer, String>> communiquer() {
         Socket sock = etablirConnexion();
 
         /*
