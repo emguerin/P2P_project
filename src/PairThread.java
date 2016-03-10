@@ -105,7 +105,7 @@ public class PairThread implements Runnable {
 								
 							out.println("Good bye !");
 							this.sock.close();   
-							exit(1);
+							System.exit(1);
 
 							break;
 							
