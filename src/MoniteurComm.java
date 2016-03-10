@@ -89,8 +89,8 @@ public class MoniteurComm implements Runnable {
                 String messageRecu = in.readLine();
                 if (messageRecu != null && messageRecu.equals("rt?")) {
                     List<String> pairsConnus = this.donnerPairs();
-                    for (String s: pairsConnus) {
-                        out.println(s);
+                    for (String strPair: pairsConnus) {
+                        out.println(strPair);
                     }
                 }
             }
@@ -112,5 +112,6 @@ public class MoniteurComm implements Runnable {
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
+        return serv;
     }
 }
