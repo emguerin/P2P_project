@@ -112,16 +112,26 @@ public class PairThread implements Runnable {
 					    case "msg":
 						// message du pair
 
-					    	if (words.length < 2) {
-					    		out.println("Un message doit suivre cette commande. Format -> msg:'message'");
+					    	if (words.length < 4) {
+					    		out.println("D'autres éléments doivent suivre cette commande msg. Format -> msg:hash(destinataire):IP(emetteur):contenu");
 					    	}
 					    	else {
+					    		// GERER LE MESSAGE OU SA TRANSMISSION
 					    		System.out.println("Message reçu : " + words[1]);
 					    		out.println("message reçu");
 					    	}
 
 							break;
-							
+						
+						case "yo":
+						// on cherche succ ou pred du pair disant yo
+							if (words.length < 3) {
+								out.println("D'autres éléments doivent suivre cette commande yo. Format -> msg:hash(emetteur):IP(emetteur)");
+							}
+							else {
+								// on fait circuler le message si on est pas succ/pred
+							}
+
 					    default:
 							out.println("Message/Commande incompris(e).");
 							break;
@@ -140,3 +150,7 @@ public class PairThread implements Runnable {
 		
     }  
 }
+
+/*
+ *	
+ */
