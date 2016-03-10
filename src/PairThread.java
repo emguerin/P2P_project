@@ -69,7 +69,7 @@ public class PairThread implements Runnable {
     }
 
 
-    public void run {
+    public void run() {
 						
 		while (true) {
 			try (
@@ -94,7 +94,7 @@ public class PairThread implements Runnable {
 						// demande notre table de routage
 								
 						    for (String ligne : this.getTableRoutage()) {
-						    	reponse += ligne + "\n"
+						    	reponse += ligne + "\n";
 						    }
 							out.println(reponse);
 

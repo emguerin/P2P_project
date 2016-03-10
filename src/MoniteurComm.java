@@ -88,7 +88,7 @@ public class MoniteurComm implements Runnable {
                     }
                 }
             }
-            catch (IOException)
+            catch (IOException ioe)
             {
                 System.err.println("Erreur pendant la communication avec le MonitorServer.");
                 System.err.println(ioe.getMessage());
