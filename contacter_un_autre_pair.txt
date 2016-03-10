@@ -12,7 +12,7 @@
 #3 - Retour vers l'émetteur
   Que son successeur soit ou non le destinataire, la communication est finie avec lui. A ce moment, on regarde ce qui été retourné par la méthode communiquer() de ClientPair :
   -Soit false, alors le successeur était notre destinataire, le boulot est terminé, et on peut boucler de nouveau pour proposer d'envoyer un message à un autre pair du réseau
-  -Soit true, alors on attend de recevoir une connexion d'un autre pair (on attend une réponse de notre destinataire) puis si ce pair est le destinataire (on peut soit le vérifer avec le premier message qu'il nous envoie, soit en vérifiant son hash), alors on communique avec lui. La communication terminée, , on pense à remettre waitForReceiverResponse à false.
+  -Soit true, alors on attend un certain nombre de secondes prédéfini à l'avance de recevoir une connexion d'un autre pair (on attend une réponse de notre destinataire) puis si ce pair est le destinataire (on peut soit le vérifer avec le premier message qu'il nous envoie, soit en vérifiant son hash), alors on communique avec lui. La communication terminée, , on pense à remettre waitForReceiverResponse à false.
 
 #N.B. :
   On ajoute dans la partie serveur de Pair.java une ligne pour checker la valeur de waitForReceiverResponse car si elle est à true c'est qu'on attend la connexion d'un pair bien précis (le destinataire) et sinon on peut accepter n'importe qui. => A étudier
