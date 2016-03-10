@@ -11,20 +11,20 @@ public class Pair implements Runnable {
     public static boolean wrq = false;   
 
 
-
     private int hash;
     private Map<Integer, Map<Integer, String>> tableRoutage;
     private int port;
+    private String ip;
 
     //Constructeur
     public Pair(ClientHashServer clHash, ClientWelcomeServer clWelcome) {
 
         //récupération de l'adresse IP publique de la machine
-        String myIp = InetAddress.getLocalHost().getHostAddress();
+        ip = InetAddress.getLocalHost().getHostAddress();
 
         //Communication avec le HashServer
         System.out.println("Début de la communication avec le serveur de hash à l'adresse " + clHash.getAdresse());
-        this.hash = clHash.communiquer(); //METTRE myIp EN PARAM 
+        this.hash = clHash.communiquer(); //METTRE ip EN PARAM 
         System.out.println("Fin de la communication avec le serveur de hash\n");
 
         if(aht) {
@@ -59,6 +59,11 @@ public class Pair implements Runnable {
     public Map<Integer, Map<Integer, String>> getTableRoutage(){
         return this.tableRoutage;
     }
+    //////faire que ca retourne l'ip du successeur donc refaire un get sur la deuxième map et obtenir l'ip
+    public Map<Integer, String> getSuccesseur() {
+        return this.tableRoutage.get(this.hash);
+    }
+
     public int getPort(){
         return this.port;
     }
@@ -118,15 +123,11 @@ public class Pair implements Runnable {
 
         //Gestion du côté client du pair
         Scanner sc = new Scanner(System.in);
-        String ip;
         int h;
         ClientPair clPair;
         while(true) {
             System.out.println("Quelle pair souhaitez-vous contacter (donnez un hash) ?");
-            ip = sc.nextLine();
-            //récupération du hash du pair destinataire
-            h = clHash.communiquer(ip); //il faudra mettre l'ip en paramètre dans la classe ClientHashServer!!!!!!!!!!!
-
+            h = sc.nextLine();
             
             /*
             *Si le dest est le prédecesseur
@@ -141,7 +142,9 @@ public class Pair implements Runnable {
             *- soit ce n'est pas lui et le résultat de la communication une fois terminée est l'ip du successeur du successeur et on boucle ainsi sur les différents succ
             */
             
-            /*
+            int hDeMonPred = ;
+            int hDeMonSucc = ;
+
             if(h == hash du prédecesseur) {
                 clPair = new ClientPair(this.port, ipPred);
             } else {
@@ -152,8 +155,8 @@ public class Pair implements Runnable {
                         "dest trouvé"
                     }
                 }
-            }*/
-        }
+            }
+        } //S'ASSURER QUE, UNE FOIS COMMUNICATION TERMINEE AVEC UN PAIR, CAPABLE D'EN RECONTACTER UN AUTRE
 
     }
 }
