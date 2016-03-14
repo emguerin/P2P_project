@@ -163,12 +163,16 @@ public class PairThread implements Runnable {
 										// emetteur entre ce pair et son successeur
 										out.println(this.hash + ":" + ip);
 										out.println(hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
-										this.tableRoutage.get(1).setHashDestinataire(hemet);
-										this.tableRoutage.get(1).setIpDestinataire(ipemet);
 
 										///////////////////////////////////////////////
 										// PREVENIR SUCC DU CHGMT DE SON PREDECESSEUR /
 										///////////////////////////////////////////////
+										String msg = "ctr:0:" + hemet + ":" + ipemet;
+										ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
+						    			clPair.transmettreMessage(msg);
+
+										this.tableRoutage.get(1).setHashDestinataire(hemet);
+										this.tableRoutage.get(1).setIpDestinataire(ipemet);										
 									}
 									else {
 										ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
@@ -181,12 +185,16 @@ public class PairThread implements Runnable {
 										// emetteur entre ce pair et son predecesseur
 										out.println(hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
 										out.println(this.hash + ":" + ip);
-										this.tableRoutage.get(0).setHashDestinataire(hemet);
-										this.tableRoutage.get(0).setIpDestinataire(ipemet);
 
 										///////////////////////////////////////////////
-										// PREVENIR pred DU CHGMT DE SON SUCCESSEUR /
+										// PREVENIR PREDECESSEUR DU CHGMT DE SON SUCCESSEUR /
 										///////////////////////////////////////////////
+										String msg = "ctr:1:" + hemet + ":" + ipemet;
+										ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
+						    			clPair.transmettreMessage(msg);
+
+										this.tableRoutage.get(0).setHashDestinataire(hemet);
+										this.tableRoutage.get(0).setIpDestinataire(ipemet);
 									}
 									else {
 										ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
@@ -195,6 +203,19 @@ public class PairThread implements Runnable {
 									}
 								}
 							}
+							break;
+
+						case "ctr":
+							if (words.length < 4) {
+								out.println("D'autres éléments doivent suivre cette commande ctr.");
+								out.println("Format -> ctr:lignetableroutage(0->pred,1->succ):newhash:newip");
+							}
+							else {
+								int ligne = PairThread.safeParseInt(words[1]);
+								this.tableRoutage.get(ligne).setHashDestinataire(words[2]);
+								this.tableRoutage.get(ligne).setIpDestinataire(words[3]);
+							}
+
 
 					    default:
 							out.println("Message/Commande incompris(e).");
