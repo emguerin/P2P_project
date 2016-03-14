@@ -52,16 +52,17 @@ public class ClientWelcomeServer {
 
         System.out.println("Message retourné par le serveur Welcome : "+entreeLue);
 
-        if(entreeLue.equals("wrq")) {
+        if (entreeLue.equals("wrq")) {
             AppliClient.wrq = true;
         }
 
         /*
-        * Si on recoit le msg yaf, alors on dit que succ est lui-même
-        *
-        * Sinon, on recoit l'IP du successeur comme message (au lieu de yaf) et on doit la conserver pour créer la
-        * table de routage du pair
-        */
+         * Si on recoit le msg yaf, alors on dit que notre successeur est
+         * nous-même
+         *
+         * Sinon, on recoit l'IP du successeur comme message (au lieu de yaf) et
+         * on doit la conserver pour créer la table de routage du pair
+         */
 
         // Instanciation de la table de routage
         Map<Integer, Map<Integer, String>> tr = new HashMap<Integer, Map<Integer, String>>();
@@ -87,21 +88,38 @@ public class ClientWelcomeServer {
              */
             String ipMembre = entree.readLine();
 
-            Map<Integer, String> pred = new HashMap<Integer, String>();
             Map<Integer, String> succ = new HashMap<Integer, String>();
-            this.recupererPairs(pred, succ, ipMembre);
+            Map<Integer, String> pred = new HashMap<Integer, String>();
+            int hashPred;
 
+            /*
+             * On récupère les infos nécessaires sur notre successeur et
+             * notre prédecesseur
+             */
+            hashPred = this.recupererPairs(succ, ipMembre);
             tr.put(this.hash, succ);
+
+            String notreIP = null;
+            try {
+                notreIP = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException uhe) {
+                System.err.println(uhe.getMessage());
+            }
+
+            // Ajout de la ligne concernant notre prédesseur
+            pred.put(this.hash, notreIP);
+            tr.put(hashPred, succ);
         }
 
         return tr;
     }
 
-    private recupererPairs(Map<Integer, String> pred, Map<Integer, String> succ, String ip) {
+
+    private int recupererPairs(Map<Integer, String> succ, String ip) {
         // 1. Mise en place des objets pour communiquer
         Socket sock;
         try {
-            sock = new Socket(ip, 2016);
+            sock = new Socket(ip, 2016); // port 2016
         } catch (UnknownHostException uhe) {
             System.out.println(uhe.getMessage);
         } catch (IOException ioe) {
@@ -125,9 +143,14 @@ public class ClientWelcomeServer {
          * 2. La communication. On nous renverra :
          *   - pour le prédécesseur : hash_pred:mon_hash:mon_ip
          *   - pour le successeur   : hash_moi:hash_lui:ip_lui
+         *
+         * On récupère
          */
         String[] predecesseur = entree.readLine().split(":");
         Stirng[] successeur   = entree.readLine().split(":");
+
+        succ.put(Integer.parseInt(successeur[1]), successeur[2]); // hash_lui, ip_lui
+        return Integer.parseInt(predecesseur[0]); // on retourne le hash du prédesseur
     }
 
 
@@ -143,6 +166,7 @@ public class ClientWelcomeServer {
 
            return sock;
     }
+
 
     public String lireMessage(BufferedReader entree) {
         String entreeLue = "";
