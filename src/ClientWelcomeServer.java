@@ -82,20 +82,54 @@ public class ClientWelcomeServer {
             /*
              * On reçoit une IP d'une personne du réseau
              * on doit le communiquer et lui dire qu'on veut rentrer sur
-             * le serveur avec un message de la forme : "TRUC"
+             * le serveur avec un message de la forme : yo:hash(soi):ip(soi)
              * ensuite on aura la table de routage
              */
-            String ipSucc = entree.readLine();
-            ClientHashServer chs = new ClientHashServer(LE_PORT, this.adresseServeur);
-            // Passer l'IP voulue au HashServer
-            int hashSucc = chs.communiquer();
+            String ipMembre = entree.readLine();
+
+            Map<Integer, String> pred = new HashMap<Integer, String>();
             Map<Integer, String> succ = new HashMap<Integer, String>();
-            succ.put(hashSucc, ipSucc);
+            this.recupererPairs(pred, succ, ipMembre);
+
             tr.put(this.hash, succ);
         }
 
         return tr;
     }
+
+    private recupererPairs(Map<Integer, String> pred, Map<Integer, String> succ, String ip) {
+        // 1. Mise en place des objets pour communiquer
+        Socket sock;
+        try {
+            sock = new Socket(ip, 2016);
+        } catch (UnknownHostException uhe) {
+            System.out.println(uhe.getMessage);
+        } catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+
+        InputStream  fluxEntree = null;
+        OutputStream fluxSortie = null;
+
+        try {
+            fluxEntree = sock.getInputStream();
+            fluxSortie = sock.getOutputStream();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+
+        BufferedReader entree = new BufferedReader(new InputStreamReader(fluxEntree));
+        PrintWriter    sortie = new PrintWriter(fluxSortie, true);
+
+        /*
+         * 2. La communication. On nous renverra :
+         *   - pour le prédécesseur : hash_pred:mon_hash:mon_ip
+         *   - pour le successeur   : hash_moi:hash_lui:ip_lui
+         */
+        String[] predecesseur = entree.readLine().split(":");
+        Stirng[] successeur   = entree.readLine().split(":");
+    }
+
 
     public Socket etablirConnexion() {
 	       Socket sock = null;
