@@ -13,7 +13,7 @@ public class Pair implements Runnable {
 
 
     private int hash;
-    private Map<Integer, Map<Integer, String>> tableRoutage;
+    ArrayList<LigneRoutage> tableRoutage;
     private int port;
 
     //Constructeur
@@ -48,7 +48,7 @@ public class Pair implements Runnable {
     public void setHash(int hash) {
         this.hash = hash;
     }
-    public void setTableRoutage(Map<Integer, Map<Integer, String>> tableRoutage) {
+    public void setTableRoutage(ArrayList<LigneRoutage>  tableRoutage) {
         this.tableRoutage = tableRoutage;
     }
     public void setPort(int port) {
@@ -56,7 +56,7 @@ public class Pair implements Runnable {
     }
 
     //Accesseurs
-    public Map<Integer, Map<Integer, String>> getTableRoutage(){
+    public ArrayList<LigneRoutage> getTableRoutage(){
         return this.tableRoutage;
     }
     public int getPort(){
@@ -120,7 +120,7 @@ public class Pair implements Runnable {
         Scanner sc = new Scanner(System.in);
         String ip;
         int h;
-        ClientPair clPair;
+        ClientPair clPair = new ClientPair(/*AVEC les params nécessaires*/);
         while(true) {
             System.out.println("Quelle pair souhaitez-vous contacter (donnez un hash) ?");
             ip = sc.nextLine();

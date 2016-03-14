@@ -5,10 +5,10 @@ import java.util.*;
 
 public class PairThread implements Runnable {
 
-	private Map<Integer, Map<Integer, String>> tableRoutage;
+	private ArrayList<LigneRoutage> tableRoutage;
 	private Socket sock;
 
-	public PairThread(Map<Integer, Map<Integer, String>> tableR, Socket so) {
+	public PairThread(ArrayList<LigneRoutage> tableR, Socket so) {
 		this.tableRoutage = tableR;
 		this.sock = so;
 	}
@@ -44,28 +44,8 @@ public class PairThread implements Runnable {
      * Fonction pour retourner les pairs que l'on connaît (dans tableRoutage)
      * sous la forme hash:hash(succ):ip(succ)
      */
-    private List<String> getTableRoutage() {
-        List<String> lignes_table = new ArrayList<String>();
-        Set<Integer> tableKeys = this.tableRoutage.keySet();
-
-        String tmp;
-        Map<Integer, String> mapTmp;
-        Integer elem2;
-        String elem3;
-        for (Integer i: tableKeys) {
-            mapTmp = this.tableRoutage.get(i);
-
-            elem2 = (Integer)mapTmp.keySet().toArray()[0]; // récup du hash du successeur
-            elem3 = (String)mapTmp.values().toArray()[0]; // récup de l'IP du successeur
-
-            // Constitution de la chaîne au format correct
-            tmp = new String();
-            tmp += i + ":" + elem2 + ":" + elem3;
-
-            lignes_table.add(tmp);
-        }
-
-        return lignes_table;
+    private ArrayList<LigneRoutage> getTableRoutage() {
+        return this.tableRoutage;
     }
 
 
