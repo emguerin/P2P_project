@@ -62,6 +62,29 @@ public class ClientPair {
         */
     }
 
+    /*
+     * Méthode appelée pour envoyer le message donné en paramètre à son destinataire
+     *
+     */
+    public void transmettreMessage(String mess) {        
+        /*
+         * Mise en place des flux et des buffers pour écrire/recevoir les
+         * messages + facilement
+         */
+        try (
+            Socket sock = etablirConnexion();
+            BufferedReader entree = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            PrintWriter    sortie = new PrintWriter(sock.getOutputStream(), true);
+            )
+        {
+            sortie.out(mess);
+        } 
+        catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+    }
+    
+
     public Socket etablirConnexion() {
 	       Socket sock = null;
            try {
