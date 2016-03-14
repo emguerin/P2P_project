@@ -1,4 +1,4 @@
-﻿#VERSION 2
+﻿##VERSION 2
 
 #1 - L'émetteur
   On instancie un ClientPair avec l'IP de notre successeur puis on utilise la méthode communiquer() pour le contacter
@@ -19,7 +19,7 @@
 
 
 
-#VERSION 1
+##VERSION 1
 
 On considère ici qu'on ajoute dans Pair.java une variable booléenne "waitForReceiverResponse" qui indique si on est ou non dans l'attente de la réponse de notre destinataire
 
