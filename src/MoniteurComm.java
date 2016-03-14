@@ -20,21 +20,14 @@ public class MoniteurComm implements Runnable {
 
     // Le port à interroger pour entrer en communication avec ce petit serveur
     private int port;
-
-    /*
-     * Une Map pour représenter la table de routage
-     * les infos sont organisées comme ceci :
-     *   hash(pair) : hash(successeur) : IP successeur
-     */
-    private Map<Integer, Map<Integer, String>> tableRoutage;
-
+    private List<LigneRoutage> tableRoutage;
 
     /**
      * Constructeur de la classe
      * @param port         le port à interroger pour entrer en communication avec ce petit serveur
      * @param tableRoutage la table de routage du pair qui instancie un MoniteurComm
      */
-    public MoniteurComm(int port, Map<Integer, Map<Integer, String>> tableRoutage) {
+    public MoniteurComm(int port, List<LigneRoutage> tableRoutage) {
         this.port = port;
         this.tableRoutage = tableRoutage;
     }
@@ -48,11 +41,11 @@ public class MoniteurComm implements Runnable {
         this.port = p;
     }
 
-    public Map<Integer, Map<Integer, String>> getTableRoutage() {
+    public List<LigneRoutage> getTableRoutage() {
         return this.tableRoutage;
     }
 
-    public void setTableRoutage(Map<Integer, Map<Integer, String>> tr) {
+    public void setTableRoutage(Liste<LigneRoutage> tr) {
         this.tableRoutage = tr;
     }
 

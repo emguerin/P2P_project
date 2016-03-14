@@ -3,6 +3,8 @@ import java.net.*;
 import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class ClientWelcomeServer {
@@ -17,7 +19,7 @@ public class ClientWelcomeServer {
         this.hash           = hash;
     }
 
-    public Map<Integer, Map<Integer, String>> communiquer() {
+    public List<LigneRoutage> communiquer() {
         Socket sock = etablirConnexion();
 
         /*
@@ -50,72 +52,59 @@ public class ClientWelcomeServer {
 
         entreeLue = this.lireMessage(entree);
 
-        System.out.println("Message retourné par le serveur Welcome : "+entreeLue);
+        System.out.println("Message retourné par le serveur Welcome : " + entreeLue);
 
         if (entreeLue.equals("wrq")) {
-            AppliClient.wrq = true;
+            System.err.println("Mauvaise requête");
         }
 
         /*
          * Si on recoit le msg yaf, alors on dit que notre successeur est
          * nous-même
          *
-         * Sinon, on recoit l'IP du successeur comme message (au lieu de yaf) et
-         * on doit la conserver pour créer la table de routage du pair
+         * Sinon, on recoit l'IP de quelqu'un d'autre du réseau
          */
 
         // Instanciation de la table de routage
-        Map<Integer, Map<Integer, String>> tr = new HashMap<Integer, Map<Integer, String>>();
+        List<LigneRoutage> tr = new ArrayList<LigneRoutage>();
+        String notreIP = null;
+        try {
+            notreIp = InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException uhe) {
+            System.err.println(e.getMessage());
+        }
+
         if (entree.readLine().equals("yaf")) {
-            Map<Integer, String> soi = new HashMap<Integer, String>();
-
-            /*
-             * On ajoute la 2ème partie de la ligne dans la map
-             */
-            try {
-                soi.put(this.hash, InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException e) {
-                System.out.println(e.getMessage());
-            }
-
-            tr.put(this.hash, soi);
+            tr.add(new LigneRoutage(this.hash, this.hash, notreIP));
         } else {
             /*
              * On reçoit une IP d'une personne du réseau
              * on doit le communiquer et lui dire qu'on veut rentrer sur
              * le serveur avec un message de la forme : yo:hash(soi):ip(soi)
-             * ensuite on aura la table de routage
+             * ensuite on aura la table de routage. On nous envoie d'abord
+             * la ligne concernant le prédecesseur puis la ligne de notre
+             * successeur
              */
             String ipMembre = entree.readLine();
 
-            Map<Integer, String> succ = new HashMap<Integer, String>();
-            Map<Integer, String> pred = new HashMap<Integer, String>();
-            int hashPred;
-
             /*
              * On récupère les infos nécessaires sur notre successeur et
-             * notre prédecesseur
+             * notre prédecesseur au membre dont on a l'IP
              */
-            hashPred = this.recupererPairs(succ, ipMembre);
-            tr.put(this.hash, succ);
+            LigneRoutage succ = null;
+            LigneRoutage pred = null;
 
-            String notreIP = null;
-            try {
-                notreIP = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException uhe) {
-                System.err.println(uhe.getMessage());
-            }
-
-            // Ajout de la ligne concernant notre prédesseur
-            pred.put(this.hash, notreIP);
-            tr.put(hashPred, succ);
+            // succ et pred sont instanciés dans la fonctions
+            this.recupererPairs(succ, pred, ipMembre);
+            tr.add(pred);
+            tr.add(succ);
         }
 
         return tr;
     }
 
 
-    private int recupererPairs(Map<Integer, String> succ, String ip) {
+    private int recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip) {
         // 1. Mise en place des objets pour communiquer
         Socket sock;
         try {
@@ -146,11 +135,11 @@ public class ClientWelcomeServer {
          *
          * On récupère
          */
-        String[] predecesseur = entree.readLine().split(":");
-        Stirng[] successeur   = entree.readLine().split(":");
+        String predecesseur = entree.readLine();
+        Stirng successeur   = entree.readLine();
 
-        succ.put(Integer.parseInt(successeur[1]), successeur[2]); // hash_lui, ip_lui
-        return Integer.parseInt(predecesseur[0]); // on retourne le hash du prédesseur
+        pred = new LigneRoutage(predecesseur);
+        succ = new LigneRoutage(successeur);
     }
 
 
