@@ -47,7 +47,7 @@ public class ClientHashServer {
         System.out.println("Vous obtenez le hash : "+entreeLue);
 
         if(entreeLue.equals("aht")) {
-            AppliClient.aht = true;
+            return null;
         }
 
         return this.safeParseInt(entreeLue);

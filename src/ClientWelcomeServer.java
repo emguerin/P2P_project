@@ -56,6 +56,7 @@ public class ClientWelcomeServer {
 
         if (entreeLue.equals("wrq")) {
             System.err.println("Mauvaise requête");
+            return null;
         }
 
         /*

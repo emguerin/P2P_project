@@ -13,15 +13,7 @@ public class ClientPair {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/*Code de merde à suivre, c'est celui de ClientWelcomeServer
-*Ici, il va falloir checker si on est connecté avec le destinataire voulu et
-*
-*si oui : 
-*on communique avec lui puis quand c'est terminé on retourne null
-*
-*si non:
-*on retourne l'ip du successeur de notre successeur*
-*/
+/*Code de merde à suivre, c'est celui de ClientWelcomeServer*/
 ///////////////////////////////////////////////////////////////////////////////    
     public void communiquer() {
         Socket sock = etablirConnexion();
