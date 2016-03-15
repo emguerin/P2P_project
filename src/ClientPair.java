@@ -13,15 +13,7 @@ public class ClientPair {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/*Code de merde à suivre, c'est celui de ClientWelcomeServer
-*Ici, il va falloir checker si on est connecté avec le destinataire voulu et
-*
-*si oui : 
-*on communique avec lui puis quand c'est terminé on retourne null
-*
-*si non:
-*on retourne l'ip du successeur de notre successeur*
-*/
+/*Code de merde à suivre, c'est celui de ClientWelcomeServer*/
 ///////////////////////////////////////////////////////////////////////////////    
     public void communiquer() {
         Socket sock = etablirConnexion();
@@ -69,6 +61,29 @@ public class ClientPair {
         * table de routage du pair 
         */
     }
+
+    /*
+     * Méthode appelée pour envoyer le message donné en paramètre à son destinataire
+     *
+     */
+    public void transmettreMessage(String mess) {        
+        /*
+         * Mise en place des flux et des buffers pour écrire/recevoir les
+         * messages + facilement
+         */
+        try (
+            Socket sock = etablirConnexion();
+            BufferedReader entree = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            PrintWriter    sortie = new PrintWriter(sock.getOutputStream(), true);
+            )
+        {
+            sortie.println(mess);
+        } 
+        catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+    }
+    
 
     public Socket etablirConnexion() {
 	       Socket sock = null;

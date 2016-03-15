@@ -3,8 +3,6 @@
  */
 
 // Les imports nécessaires
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
@@ -20,21 +18,14 @@ public class MoniteurComm implements Runnable {
 
     // Le port à interroger pour entrer en communication avec ce petit serveur
     private int port;
-
-    /*
-     * Une Map pour représenter la table de routage
-     * les infos sont organisées comme ceci :
-     *   hash(pair) : hash(successeur) : IP successeur
-     */
-    private Map<Integer, Map<Integer, String>> tableRoutage;
-
+    private List<LigneRoutage> tableRoutage;
 
     /**
      * Constructeur de la classe
      * @param port         le port à interroger pour entrer en communication avec ce petit serveur
      * @param tableRoutage la table de routage du pair qui instancie un MoniteurComm
      */
-    public MoniteurComm(int port, Map<Integer, Map<Integer, String>> tableRoutage) {
+    public MoniteurComm(int port, List<LigneRoutage> tableRoutage) {
         this.port = port;
         this.tableRoutage = tableRoutage;
     }
@@ -48,11 +39,11 @@ public class MoniteurComm implements Runnable {
         this.port = p;
     }
 
-    public Map<Integer, Map<Integer, String>> getTableRoutage() {
+    public List<LigneRoutage> getTableRoutage() {
         return this.tableRoutage;
     }
 
-    public void setTableRoutage(Map<Integer, Map<Integer, String>> tr) {
+    public void setTableRoutage(List<LigneRoutage> tr) {
         this.tableRoutage = tr;
     }
 
@@ -64,23 +55,8 @@ public class MoniteurComm implements Runnable {
      */
     private List<String> donnerPairs() {
         List<String> lesPairs = new ArrayList<String>();
-        Set<Integer> pairsConnus = this.tableRoutage.keySet();
-
-        String tmp;
-        Map<Integer, String> mapTmp;
-        Integer elem2;
-        String elem3;
-        for (Integer i: pairsConnus) {
-            mapTmp = this.tableRoutage.get(i);
-
-            elem2 = (Integer)mapTmp.keySet().toArray()[0]; // récup du hash du successeur
-            elem3 = (String)mapTmp.values().toArray()[0]; // récup de l'IP du successeur
-
-            // Constitution de la chaîne au format correct
-            tmp = new String();
-            tmp += i + ":" + elem2 + ":" + elem3;
-
-            lesPairs.add(tmp);
+        for (LigneRoutage lr : tableRoutage) {
+            lesPairs.add(lr.toString());
         }
 
         return lesPairs;
@@ -103,6 +79,10 @@ public class MoniteurComm implements Runnable {
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             )
             {
+                /*
+                 * On récupère les pairs que l'on connaît et on les retourne
+                 * ligne par ligne au MonitorServer
+                 */
                 String messageRecu = in.readLine();
                 if (messageRecu != null && messageRecu.equals("rt?")) {
                     List<String> pairsConnus = this.donnerPairs();
@@ -110,9 +90,8 @@ public class MoniteurComm implements Runnable {
                         out.println(strPair);
                     }
                 }
-            }
-            catch (IOException ioe)
-            {
+
+            } catch (IOException ioe) {
                 System.err.println("Erreur pendant la communication avec le MonitorServer.");
                 System.err.println(ioe.getMessage());
             }
@@ -120,15 +99,5 @@ public class MoniteurComm implements Runnable {
             System.err.println("Exception à la création du SocketServer");
             System.err.println(ioe.getMessage());
         }
-    }
-
-    private ServerSocket obtenirServeur(int port) {
-        ServerSocket serv = null;
-        try {
-            serv = new ServerSocket(port);
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-        }
-        return serv;
     }
 }

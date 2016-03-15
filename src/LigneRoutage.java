@@ -25,11 +25,11 @@ public class LigneRoutage {
         this.hash = hash;
     }
 
-    public void setHashDestinaire(int newHash) {
+    public void setHashDestinataire(int newHash) {
         this.hashDestinataire = newHash;
     }
 
-    public void setIpDestinaire(String newIp) {
+    public void setIpDestinataire(String newIp) {
         this.ipDestinaire = newIp;
     }
 
@@ -37,7 +37,7 @@ public class LigneRoutage {
         return this.hash;
     }
 
-    public int getHashDestinaire() {
+    public int getHashDestinataire() {
         return this.hashDestinataire;
     }
 

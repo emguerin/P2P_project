@@ -1,4 +1,6 @@
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.net.Socket;
 import java.net.*;
 import java.util.Scanner;
@@ -6,10 +8,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 public class Pair implements Runnable {
-
-    public static boolean aht = false;    
-    public static boolean wrq = false;   
-
 
     private int hash;
     ArrayList<LigneRoutage> tableRoutage;
@@ -25,20 +23,20 @@ public class Pair implements Runnable {
         //Communication avec le HashServer
         System.out.println("Début de la communication avec le serveur de hash à l'adresse " + clHash.getAdresse());
         this.hash = clHash.communiquer(); //METTRE ip EN PARAM 
-        System.out.println("Fin de la communication avec le serveur de hash\n");
-
-        if(aht) {
+        if(this.hash == null) {
+            System.out.println("Il n'y a plus de hash disponible, vous ne pouvez pas rejoindre le réseau P2P");
             System.exit(0);
         }
+        System.out.println("Fin de la communication avec le serveur de hash\n");
 
         //Communication avec le WelcomeServer
         System.out.println("Début de la communication avec le serveur Welcome à l'adresse " + clWelcome.getAdresse());
         this.tableRoutage = clWelcome.communiquer(); //METTRE IP ET HASH EN PARAM
-        System.out.println("Fin de la communication avec le serveur Welcome\n");
-
-        if(wrq) {
+        if(this.tableRoutage == null) {
+            System.out.println("Il y a eu un problème lors de l'obtention de votre table de routage. Vous allez être déconnecté");
             System.exit(0);
         }
+        System.out.println("Fin de la communication avec le serveur Welcome\n");
 
         this.port = 2016;
     }
@@ -48,7 +46,7 @@ public class Pair implements Runnable {
     public void setHash(int hash) {
         this.hash = hash;
     }
-    public void setTableRoutage(ArrayList<LigneRoutage>  tableRoutage) {
+    public void setTableRoutage(ArrayList<LigneRoutage> tableRoutage) {
         this.tableRoutage = tableRoutage;
     }
     public void setPort(int port) {
@@ -59,13 +57,27 @@ public class Pair implements Runnable {
     public ArrayList<LigneRoutage> getTableRoutage(){
         return this.tableRoutage;
     }
-    //////faire que ca retourne l'ip du successeur donc refaire un get sur la deuxième map et obtenir l'ip
-    public Map<Integer, String> getSuccesseur() {
-        return this.tableRoutage.get(this.hash);
+    //Ip est à envoyer au serveur de hachage si on veut récupérer le hash du successeur
+    public LigneRoutage getSuccesseur() {
+        return this.tableRoutage.get(1);
     }
-
+    public LigneRoutage getPredecesseur() {
+        return this.tableRoutage.get(0);
+    }
     public int getPort(){
         return this.port;
+    }
+
+
+    // Parsing d'une chaîne de caractères pour trouver un entier
+    // En cas d'erreur l'entier retourné est négatif
+    private static int safeParseInt(String i) {
+        int res = -1;
+        try {
+            res = Integer.parseInt(i);
+        } finally {
+            return res;
+        }
     }
 
 
@@ -75,7 +87,7 @@ public class Pair implements Runnable {
         //écoute du port 
         try {
             ServerSocket serverSock = new ServerSocket(this.port);
-            //récupération des demandes client
+            //récupération des demandes Client
             Socket sock;
             while(true) {
                 try {
@@ -124,38 +136,20 @@ public class Pair implements Runnable {
         //Gestion du côté client du pair
         Scanner sc = new Scanner(System.in);
         int h;
-        ClientPair clPair = new ClientPair(/*AVEC les params nécessaires*/);
+        ClientPair clPair;
         while(true) {
             System.out.println("Quelle pair souhaitez-vous contacter (donnez un hash) ?");
-            h = sc.nextLine();
-            
-            /*
-            *Si le dest est le prédecesseur
-            *on lance alors la communication avec lui et on fait les envois de messages qu'il faut
-            *
-            *
-            *sinon, on lance la communication avec le successeur et :
-            *
-            * - soit c'est lui et alors on fait les envois de messages qu'il faut et le résultat de la communication une fois terminée est par
-            *exemple "null" ce qui veut dire qu'on a trouvé le dest 
-            *
-            *- soit ce n'est pas lui et le résultat de la communication une fois terminée est l'ip du successeur du successeur et on boucle ainsi sur les différents succ
-            */
-            
-            int hDeMonPred = ;
-            int hDeMonSucc = ;
-
-            if(h == hash du prédecesseur) {
-                clPair = new ClientPair(this.port, ipPred);
+            h = safeParseInt(sc.nextLine());
+               
+            //Si c'est notre prédecesseur que l'on souhaite contacter, alors on lui envoie le message et il va nous recontacter car il sera le destinataire
+            if(h == this.getPredecesseur().getHashDestinaire()) {
+                clPair = new ClientPair(this.port, this.getPredecesseur().getIpDestinaire());
             } else {
-                while ("dest pas trouvé") {
-                    clPair = new ClientPair(this.port, ipSucc);
-                    ipSucc = clPair.communiquer(h); //tant qu'on n'est pas tombé sur le dest, on récup le successeur
-                    if(ipSucc == null) {
-                        "dest trouvé"
-                    }
-                }
+                clPair = new ClientPair(this.port, this.getPredecesseur().getIpDestinaire()); //sinon, on contacte notre successeur
             }
+
+            clPair.communiquer();
+
         } //S'ASSURER QUE, UNE FOIS COMMUNICATION TERMINEE AVEC UN PAIR, CAPABLE D'EN RECONTACTER UN AUTRE
 
     }
