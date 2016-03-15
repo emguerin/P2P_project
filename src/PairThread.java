@@ -212,7 +212,7 @@ public class PairThread implements Runnable {
 							}
 							else {
 								int ligne = PairThread.safeParseInt(words[1]);
-								this.tableRoutage.get(ligne).setHashDestinataire(words[2]);
+								this.tableRoutage.get(ligne).setHashDestinataire(PairThread.safeParseInt(words[2]));
 								this.tableRoutage.get(ligne).setIpDestinataire(words[3]);
 							}
 

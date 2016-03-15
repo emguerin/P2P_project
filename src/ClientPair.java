@@ -77,7 +77,7 @@ public class ClientPair {
             PrintWriter    sortie = new PrintWriter(sock.getOutputStream(), true);
             )
         {
-            sortie.out(mess);
+            sortie.println(mess);
         } 
         catch (IOException ioe) {
             System.err.println(ioe.getMessage());

@@ -70,7 +70,7 @@ public class ClientWelcomeServer {
         List<LigneRoutage> tr = new ArrayList<LigneRoutage>();
         String notreIP = null;
         try {
-            notreIp = InetAddress.getLocalHost().getHostAddress());
+            notreIp = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException uhe) {
             System.err.println(e.getMessage());
         }
