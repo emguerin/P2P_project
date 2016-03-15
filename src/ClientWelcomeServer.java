@@ -10,16 +10,18 @@ import java.util.ArrayList;
 public class ClientWelcomeServer {
     private int    port;
     private String adresseServeur;
-    private int    hash;
     final static int LE_PORT = 8001;
 
-    public ClientWelcomeServer(int port, String adresseServeur, int hash) {
+    public ClientWelcomeServer(int port, String adresseServeur) {
         this.port           = port;
         this.adresseServeur = adresseServeur;
-        this.hash           = hash;
     }
 
-    public List<LigneRoutage> communiquer() {
+    public String getAdresse() {
+        return this.adresseServeur;
+    }
+
+    public ArrayList<LigneRoutage> communiquer(String notreIP, int hash) {
         Socket sock = etablirConnexion();
 
         /*
@@ -67,16 +69,17 @@ public class ClientWelcomeServer {
          */
 
         // Instanciation de la table de routage
-        List<LigneRoutage> tr = new ArrayList<LigneRoutage>();
-        String notreIP = null;
-        try {
-            notreIp = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException uhe) {
-            System.err.println(uhe.getMessage());
-        }
+        ArrayList<LigneRoutage> tr = new ArrayList<LigneRoutage>();
 
-        if (entree.readLine().equals("yaf")) {
-            tr.add(new LigneRoutage(this.hash, this.hash, notreIP));
+        String entr = null;
+        try {
+            entr = entree.readLine();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }    
+
+        if (entr.equals("yaf")) {
+            tr.add(new LigneRoutage(hash, hash, notreIP));
         } else {
             /*
              * On reçoit une IP d'une personne du réseau
@@ -86,7 +89,7 @@ public class ClientWelcomeServer {
              * la ligne concernant le prédecesseur puis la ligne de notre
              * successeur
              */
-            String ipMembre = entree.readLine();
+            String ipMembre = entr;       
 
             /*
              * On récupère les infos nécessaires sur notre successeur et
@@ -105,42 +108,38 @@ public class ClientWelcomeServer {
     }
 
 
-    private int recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip) {
-        // 1. Mise en place des objets pour communiquer
+    private void recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip) {
         Socket sock;
         try {
             sock = new Socket(ip, 2016); // port 2016
+
+            InputStream  fluxEntree = null;
+            OutputStream fluxSortie = null;
+
+            fluxEntree = sock.getInputStream();
+            fluxSortie = sock.getOutputStream();
+
+            BufferedReader entree = new BufferedReader(new InputStreamReader(fluxEntree));
+            PrintWriter    sortie = new PrintWriter(fluxSortie, true);
+
+            /*
+             * La communication. On nous renverra :
+             *   - pour le prédécesseur : hash_pred:mon_hash:mon_ip
+             *   - pour le successeur   : hash_moi:hash_lui:ip_lui
+             *
+             * On récupère
+             */  
+            String predecesseur = entree.readLine();  
+            String successeur = entree.readLine();
+           
+            pred = new LigneRoutage(predecesseur);
+            succ = new LigneRoutage(successeur);
+
         } catch (UnknownHostException uhe) {
             System.out.println(uhe.getMessage());
         } catch (IOException ioe) {
             System.out.println(ioe.getMessage());
         }
-
-        InputStream  fluxEntree = null;
-        OutputStream fluxSortie = null;
-
-        try {
-            fluxEntree = sock.getInputStream();
-            fluxSortie = sock.getOutputStream();
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-        }
-
-        BufferedReader entree = new BufferedReader(new InputStreamReader(fluxEntree));
-        PrintWriter    sortie = new PrintWriter(fluxSortie, true);
-
-        /*
-         * 2. La communication. On nous renverra :
-         *   - pour le prédécesseur : hash_pred:mon_hash:mon_ip
-         *   - pour le successeur   : hash_moi:hash_lui:ip_lui
-         *
-         * On récupère
-         */
-        String predecesseur = entree.readLine();
-        String successeur   = entree.readLine();
-
-        pred = new LigneRoutage(predecesseur);
-        succ = new LigneRoutage(successeur);
     }
 
 

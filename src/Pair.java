@@ -18,12 +18,16 @@ public class Pair implements Runnable {
     public Pair(ClientHashServer clHash, ClientWelcomeServer clWelcome) {
 
         //récupération de l'adresse IP publique de la machine
-        ip = InetAddress.getLocalHost().getHostAddress();
+        try {
+            this.ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException uhe) {
+            System.err.println(uhe.getMessage());
+        }
 
         //Communication avec le HashServer
         System.out.println("Début de la communication avec le serveur de hash à l'adresse " + clHash.getAdresse());
-        this.hash = clHash.communiquer(); //METTRE ip EN PARAM 
-        if(this.hash == null) {
+        this.hash = clHash.communiquer(this.ip);
+        if(this.hash == -1) {
             System.out.println("Il n'y a plus de hash disponible, vous ne pouvez pas rejoindre le réseau P2P");
             System.exit(0);
         }
@@ -31,7 +35,7 @@ public class Pair implements Runnable {
 
         //Communication avec le WelcomeServer
         System.out.println("Début de la communication avec le serveur Welcome à l'adresse " + clWelcome.getAdresse());
-        this.tableRoutage = clWelcome.communiquer(); //METTRE IP ET HASH EN PARAM
+        this.tableRoutage = clWelcome.communiquer(this.ip, this.hash);
         if(this.tableRoutage == null) {
             System.out.println("Il y a eu un problème lors de l'obtention de votre table de routage. Vous allez être déconnecté");
             System.exit(0);
@@ -80,18 +84,14 @@ public class Pair implements Runnable {
         }
     }
 
-
     //Partie Serveur
     @Override
     public void run() {
         //écoute du port 
-        try {
-            ServerSocket serverSock = new ServerSocket(this.port);
+        try (ServerSocket serverSock = new ServerSocket(this.port);) {
             //récupération des demandes Client
-            Socket sock;
             while(true) {
-                try {
-                    sock = serverSock.accept();
+                try (Socket sock = serverSock.accept();) {
                     //à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
                     Thread th = new Thread(new PairThread(this.tableRoutage, sock));
                     th.start(); 
@@ -103,7 +103,6 @@ public class Pair implements Runnable {
             e.printStackTrace();
         }        
     } 
-
 
 
     //Partie Client ( + Thread d'écoute du MonitorServer + Thread de la partie serveur )
@@ -142,15 +141,15 @@ public class Pair implements Runnable {
             h = safeParseInt(sc.nextLine());
                
             //Si c'est notre prédecesseur que l'on souhaite contacter, alors on lui envoie le message et il va nous recontacter car il sera le destinataire
-            if(h == this.getPredecesseur().getHashDestinaire()) {
-                clPair = new ClientPair(this.port, this.getPredecesseur().getIpDestinaire());
+            if(h == pair.getPredecesseur().getHashDestinataire()) {
+                clPair = new ClientPair(pair.port, pair.getPredecesseur().getIpDestinataire());
             } else {
-                clPair = new ClientPair(this.port, this.getPredecesseur().getIpDestinaire()); //sinon, on contacte notre successeur
+                clPair = new ClientPair(pair.port, pair.getPredecesseur().getIpDestinataire()); //sinon, on contacte notre successeur
             }
 
-            clPair.communiquer();
+            clPair.communiquer(pair.ip, h);
 
         } //S'ASSURER QUE, UNE FOIS COMMUNICATION TERMINEE AVEC UN PAIR, CAPABLE D'EN RECONTACTER UN AUTRE
-
+          // => A priori, ça me semble être le cas là
     }
 }

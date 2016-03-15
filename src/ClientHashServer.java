@@ -11,7 +11,11 @@ public class ClientHashServer {
         this.adresseServeur = adresseServeur;
     }
 
-    public int communiquer() {
+    public String getAdresse() {
+        return this.adresseServeur;
+    }
+
+    public int communiquer(String ip) {
         Socket sock = etablirConnexion();
 
         /*
@@ -47,7 +51,7 @@ public class ClientHashServer {
         System.out.println("Vous obtenez le hash : "+entreeLue);
 
         if(entreeLue.equals("aht")) {
-            return null;
+            return -1;
         }
 
         return this.safeParseInt(entreeLue);
