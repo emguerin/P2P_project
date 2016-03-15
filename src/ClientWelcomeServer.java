@@ -70,9 +70,9 @@ public class ClientWelcomeServer {
         List<LigneRoutage> tr = new ArrayList<LigneRoutage>();
         String notreIP = null;
         try {
-            notreIp = InetAddress.getLocalHost().getHostAddress());
+            notreIp = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException uhe) {
-            System.err.println(e.getMessage());
+            System.err.println(uhe.getMessage());
         }
 
         if (entree.readLine().equals("yaf")) {
@@ -111,7 +111,7 @@ public class ClientWelcomeServer {
         try {
             sock = new Socket(ip, 2016); // port 2016
         } catch (UnknownHostException uhe) {
-            System.out.println(uhe.getMessage);
+            System.out.println(uhe.getMessage());
         } catch (IOException ioe) {
             System.out.println(ioe.getMessage());
         }
@@ -137,7 +137,7 @@ public class ClientWelcomeServer {
          * On récupère
          */
         String predecesseur = entree.readLine();
-        Stirng successeur   = entree.readLine();
+        String successeur   = entree.readLine();
 
         pred = new LigneRoutage(predecesseur);
         succ = new LigneRoutage(successeur);
