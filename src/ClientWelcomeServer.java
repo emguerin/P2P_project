@@ -101,7 +101,7 @@ public class ClientWelcomeServer {
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
-        
+
         return tr;
     }
 
@@ -120,8 +120,8 @@ public class ClientWelcomeServer {
              *
              * On récupère
              */
-            String predecesseur = entree.readLine();
-            String successeur   = entree.readLine();
+            String predecesseur = this.lireMessage(entree);
+            String successeur   = this.lireMessage(entree);
 
             pred = new LigneRoutage(predecesseur);
             succ = new LigneRoutage(successeur);
