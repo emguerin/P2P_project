@@ -57,7 +57,6 @@ public class ClientWelcomeServer {
 
             if (entreeLue.equals("wrq")) {
                 System.err.println("Mauvaise requête");
-                sc.close();
                 return null;
             }
 
@@ -67,10 +66,7 @@ public class ClientWelcomeServer {
              *
              * Sinon, on recoit l'IP de quelqu'un d'autre du réseau
              */
-            String entr = null;
-            entr = this.lireMessage(entree);
-
-            if (entr.equals("yaf")) {
+            if (entreeLue.equals("yaf")) {
                 tr.add(new LigneRoutage(hash, hash, notreIP));
             } else {
                 /*
@@ -81,7 +77,7 @@ public class ClientWelcomeServer {
                  * la ligne concernant le prédecesseur puis la ligne de notre
                  * successeur
                  */
-                String ipMembre = entr;
+                String ipMembre = entreeLue;
 
                 /*
                  * On récupère les infos nécessaires sur notre successeur et
@@ -95,7 +91,6 @@ public class ClientWelcomeServer {
                 tr.add(pred);
                 tr.add(succ);
             }
-            sc.close();
         } catch (UnknownHostException uhe) {
             System.err.println(uhe.getMessage());
         } catch (IOException ioe) {

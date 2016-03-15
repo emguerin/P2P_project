@@ -6,5 +6,5 @@ mPort=8002
 size=100
 
 java -cp bin/ WelcomeServer $wPort $size &
-java -cp bin/ HashServer $hPort $size 
-java -cp bin/ MonitorServer localhost $wPort $mPort &
+java -cp bin/ HashServer $hPort $size &
+java -cp bin/ MonitorServer localhost $wPort $mPort

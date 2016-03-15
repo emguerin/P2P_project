@@ -10,7 +10,7 @@ import java.net.InetAddress;
 public class Pair implements Runnable {
 
     private int hash;
-    ArrayList<LigneRoutage> tableRoutage;
+    List<LigneRoutage> tableRoutage;
     private int port;
     private String ip;
 
@@ -50,7 +50,7 @@ public class Pair implements Runnable {
     public void setHash(int hash) {
         this.hash = hash;
     }
-    public void setTableRoutage(ArrayList<LigneRoutage> tableRoutage) {
+    public void setTableRoutage(List<LigneRoutage> tableRoutage) {
         this.tableRoutage = tableRoutage;
     }
     public void setPort(int port) {
@@ -58,7 +58,7 @@ public class Pair implements Runnable {
     }
 
     //Accesseurs
-    public ArrayList<LigneRoutage> getTableRoutage(){
+    public List<LigneRoutage> getTableRoutage(){
         return this.tableRoutage;
     }
     //Ip est à envoyer au serveur de hachage si on veut récupérer le hash du successeur
@@ -70,6 +70,9 @@ public class Pair implements Runnable {
     }
     public int getPort(){
         return this.port;
+    }
+    public String getIp() {
+        return this.ip;
     }
 
 
@@ -87,22 +90,24 @@ public class Pair implements Runnable {
     //Partie Serveur
     @Override
     public void run() {
-        //écoute du port 
+        List<Thread> threads = new ArrayList<Thread>();
+        //écoute du port
         try (ServerSocket serverSock = new ServerSocket(this.port);) {
             //récupération des demandes Client
             while(true) {
                 try (Socket sock = serverSock.accept();) {
-                    //à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
-                    Thread th = new Thread(new PairThread(this.tableRoutage, sock));
-                    th.start(); 
+                    // à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
+                    // On doit stocker les threads pour qu'ils restent actifs
+                    threads.add(new Thread(new PairThread(this.tableRoutage, sock)));
+                    threads.get(threads.size() - 1).start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }        
-    } 
+        }
+    }
 
 
     //Partie Client ( + Thread d'écoute du MonitorServer + Thread de la partie serveur )
@@ -123,7 +128,8 @@ public class Pair implements Runnable {
 
 
         //Création d'un thread d'écoute du MonitorServer
-        MoniteurComm moniteurComm = new MoniteurComm(pair.getPort(), pair.getTableRoutage());
+        // Port spécifique pour tester sur une seule machine
+        MoniteurComm moniteurComm = new MoniteurComm(2010, pair.getTableRoutage());
         Thread threadMC = new Thread(moniteurComm);
         threadMC.start();
 
@@ -133,13 +139,14 @@ public class Pair implements Runnable {
 
 
         //Gestion du côté client du pair
-        Scanner sc = new Scanner(System.in);
         int h;
         ClientPair clPair;
         while(true) {
-            System.out.println("Quelle pair souhaitez-vous contacter (donnez un hash) ?");
-            h = safeParseInt(sc.nextLine());
-               
+            System.out.println("Quel pair souhaitez-vous contacter (donnez un hash) ?");
+            Scanner sc = new Scanner(System.in);
+            String hash_str = sc.nextLine();
+            h = safeParseInt(hash_str);
+
             //Si c'est notre prédecesseur que l'on souhaite contacter, alors on lui envoie le message et il va nous recontacter car il sera le destinataire
             if(h == pair.getPredecesseur().getHashDestinataire()) {
                 clPair = new ClientPair(pair.port, pair.getPredecesseur().getIpDestinataire());
@@ -147,7 +154,7 @@ public class Pair implements Runnable {
                 clPair = new ClientPair(pair.port, pair.getPredecesseur().getIpDestinataire()); //sinon, on contacte notre successeur
             }
 
-            clPair.communiquer(pair.ip, h);
+            clPair.communiquer(pair.getIp(), h);
 
         } //S'ASSURER QUE, UNE FOIS COMMUNICATION TERMINEE AVEC UN PAIR, CAPABLE D'EN RECONTACTER UN AUTRE
           // => A priori, ça me semble être le cas là
