@@ -122,7 +122,9 @@ public class ClientWelcomeServer {
              */
             sortie.println("yo:" + hash + ":" + notreIP);
             String predecesseur = this.lireMessage(entree);
+            System.out.println("string predecesseur : " + predecesseur);
             String successeur   = this.lireMessage(entree);
+            System.out.println("string successeur : " + successeur);
 
             pred = new LigneRoutage(hash + ":" + predecesseur);
             succ = new LigneRoutage(hash + ":" + successeur);
