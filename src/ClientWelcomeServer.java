@@ -116,7 +116,7 @@ public class ClientWelcomeServer {
              *
              * On récupère
              */
-            out.println("yo:" + hash + ":" + notreIP);
+            sortie.println("yo:" + hash + ":" + notreIP);
             String predecesseur = this.lireMessage(entree);
             String successeur   = this.lireMessage(entree);
 
