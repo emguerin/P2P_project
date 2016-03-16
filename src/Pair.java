@@ -126,6 +126,9 @@ public class Pair implements Runnable {
         ClientWelcomeServer clWelcome = new ClientWelcomeServer(portWelcome, adresseWelcome);
 
         Pair pair = new Pair(clHash, clWelcome);
+        for (LigneRoutage ligne : pair.getTableRoutage()) {
+            System.out.println(ligne.toString());
+        }
 
 
         //Création d'un thread d'écoute du MonitorServer
