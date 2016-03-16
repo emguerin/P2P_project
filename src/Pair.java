@@ -103,10 +103,12 @@ public class Pair implements Runnable {
                     threads.get(threads.size() - 1).start();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    System.out.print(e.getMessage());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.print(e.getMessage());
         }
     }
 
