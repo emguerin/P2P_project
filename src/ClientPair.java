@@ -46,11 +46,11 @@ public class ClientPair {
          * Mise en place des flux et des buffers pour écrire/recevoir les
          * messages + facilement
          */
-        try (
+        try 
+        {
+            
             Socket sock = new Socket(this.adresseServeur, this.port);
             PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
-            )
-        {
             sortie.println(mess);
         } 
         catch (IOException ioe) {
