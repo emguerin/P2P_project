@@ -88,7 +88,7 @@ public class ClientWelcomeServer {
                 LigneRoutage pred = null;
 
                 // succ et pred sont instanciés dans la fonctions
-                this.recupererPairs(succ, pred, ipMembre);
+                this.recupererPairs(succ, pred, ipMembre, notreIP, hash);
                 tr.add(pred);
                 tr.add(succ);
             }
@@ -102,7 +102,7 @@ public class ClientWelcomeServer {
     }
 
 
-    private void recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip) {
+    private void recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip, String notreIP, int hash) {
 
         try (
         Socket sock = new Socket(ip, 2016);
@@ -116,6 +116,7 @@ public class ClientWelcomeServer {
              *
              * On récupère
              */
+            out.println("yo:" + hash + ":" + notreIP);
             String predecesseur = this.lireMessage(entree);
             String successeur   = this.lireMessage(entree);
 
