@@ -48,9 +48,10 @@ public class ClientPair {
          */
         try 
         {
-            
+
             Socket sock = new Socket(this.adresseServeur, this.port);
             PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
+            System.out.print(mess);
             sortie.println(mess);
         } 
         catch (IOException ioe) {
