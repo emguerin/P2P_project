@@ -43,9 +43,9 @@ public class PairThread implements Runnable {
 
     }*/
 
+
     /*
      * Fonction pour retourner les pairs que l'on connaît (dans tableRoutage)
-     * sous la forme hash:hash(succ):ip(succ)
      */
     private List<LigneRoutage> getTableRoutage() {
         return this.tableRoutage;
@@ -54,11 +54,10 @@ public class PairThread implements Runnable {
 
     public void run() {
 		try (
-			 // Tout ce qui est dans ce bloc sera fermé automatiquement à la fin du try
-			 PrintWriter out = new PrintWriter(this.sock.getOutputStream(), true);
-			 BufferedReader in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
-			)
-		{
+		// Tout ce qui est dans ce bloc sera fermé automatiquement à la fin du try
+		PrintWriter out = new PrintWriter(this.sock.getOutputStream(), true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
+		) {
 			// Après avoir accepté une connexion on lit immédiatement un message
 			String inputLine;
 			if ((inputLine = in.readLine()) != null) {
@@ -69,8 +68,6 @@ public class PairThread implements Runnable {
 				String[] words = inputLine.split(sep);
 
 				switch (words[0]) {
-
-					// Probablement inutile
 					case "rt?":
 					// demande notre table de routage
 
