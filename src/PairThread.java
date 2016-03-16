@@ -158,8 +158,11 @@ public class PairThread implements Runnable {
 							if (hemet < hsucc || (hemet > hsucc && this.hash > hsucc)) {
 								System.out.println("je suis là 2");
 								// emetteur entre ce pair et son successeur
-								out.println(this.hash + ":" + ip);
-								out.println(hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
+								ClientPair clPair2 = new ClientPair(this.sock.getPort(), ipemet);
+								clPair2.transmettreMessage("" + this.hash + ":" + ip);
+								clPair2.transmettreMessage("" + hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
+								// out.println(this.hash + ":" + ip);
+								// out.println(hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
 
 								///////////////////////////////////////////////
 								// PREVENIR SUCC DU CHGMT DE SON PREDECESSEUR /
@@ -183,8 +186,11 @@ public class PairThread implements Runnable {
 							if (hemet > hpred || (hemet < hpred && this.hash < hpred)) {
 								System.out.println("je suis là 4");
 								// emetteur entre ce pair et son predecesseur
-								out.println(hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
-								out.println(this.hash + ":" + ip);
+								ClientPair clPair2 = new ClientPair(this.sock.getPort(), ipemet);
+								clPair2.transmettreMessage("" + hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
+								clPair2.transmettreMessage("" + this.hash + ":" + ip);
+								// out.println(hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
+								// out.println(this.hash + ":" + ip);
 
 								///////////////////////////////////////////////
 								// PREVENIR PREDECESSEUR DU CHGMT DE SON SUCCESSEUR /
