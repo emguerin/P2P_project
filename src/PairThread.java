@@ -132,7 +132,7 @@ public class PairThread implements Runnable {
 					case "yo":
 					// on cherche succ ou pred du pair disant yo
 					if (words.length < 3) {
-						out.println("D'autres éléments doivent suivre cette commande yo. Format -> msg:hash(emetteur):IP(emetteur)");
+						out.println("D'autres éléments doivent suivre cette commande yo. Format -> yo:hash(emetteur):IP(emetteur)");
 					}
 					else {
 						// on récupère notre ip
