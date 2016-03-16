@@ -174,7 +174,8 @@ public class PairThread implements Runnable {
 							else {
 								System.out.println("je suis là 3");
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
-								clPair.transmettreMessage(inputLine);
+								String msg = inputLine;
+								clPair.transmettreMessage(msg);
 								// out.println("message transmis au successeur.");
 							}
 						}
@@ -198,7 +199,8 @@ public class PairThread implements Runnable {
 							else {
 								System.out.println("je suis là 5");
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
-								clPair.transmettreMessage(inputLine);
+								String msg = inputLine;
+								clPair.transmettreMessage(msg);
 								// out.println("message transmis au predecesseur.");
 							}
 						}
