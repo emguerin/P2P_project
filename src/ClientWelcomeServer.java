@@ -68,6 +68,7 @@ public class ClientWelcomeServer {
              */
             if (entreeLue.equals("yaf")) {
                 tr.add(new LigneRoutage(hash, hash, notreIP));
+                tr.add(new LigneRoutage(hash, hash, notreIP));
             } else {
                 /*
                  * On reçoit une IP d'une personne du réseau
