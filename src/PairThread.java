@@ -175,7 +175,7 @@ public class PairThread implements Runnable {
 								System.out.println("je suis là 3");
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
 								clPair.transmettreMessage(inputLine);
-								out.println("message transmis au successeur.");
+								// out.println("message transmis au successeur.");
 							}
 						}
 						else if (hemet < this.hash) {
@@ -199,7 +199,7 @@ public class PairThread implements Runnable {
 								System.out.println("je suis là 5");
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
 								clPair.transmettreMessage(inputLine);
-								out.println("message transmis au predecesseur.");
+								// out.println("message transmis au predecesseur.");
 							}
 						}
 					}
