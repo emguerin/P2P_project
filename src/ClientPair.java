@@ -47,12 +47,16 @@ public class ClientPair {
          * messages + facilement
          */
         try 
+            (
+                Socket sock = new Socket(this.adresseServeur, this.port);
+                // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
+            )
         {
 
-            Socket sock = new Socket(this.adresseServeur, this.port);
-            PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
+            // Socket sock = new Socket(this.adresseServeur, this.port);
+            // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             System.out.print(mess);
-            sortie.println(mess);
+            // sortie.println(mess);
         } 
         catch (IOException ioe) {
             System.err.println(ioe.getMessage() + " 3");
