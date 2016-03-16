@@ -155,7 +155,7 @@ public class PairThread implements Runnable {
 							System.out.println(this.hash + ":" + ip);
 						}
 						else if (hemet > this.hash) {
-							if (hemet < hsucc) {
+							if (hemet < hsucc || (hemet > hsucc && this.hash > hsucc)) {
 								System.out.println("je suis là 2");
 								// emetteur entre ce pair et son successeur
 								out.println(this.hash + ":" + ip);
@@ -179,7 +179,7 @@ public class PairThread implements Runnable {
 							}
 						}
 						else if (hemet < this.hash) {
-							if (hemet > hpred) {
+							if (hemet > hpred || (hemet < hpred && this.hash < hpred)) {
 								System.out.println("je suis là 4");
 								// emetteur entre ce pair et son predecesseur
 								out.println(hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
