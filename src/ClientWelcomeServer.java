@@ -98,7 +98,7 @@ public class ClientWelcomeServer {
         } catch (UnknownHostException uhe) {
             System.err.println(uhe.getMessage());
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            System.err.println(ioe.getMessage() + " dans communiquer ClientWelcomeServer");
         }
 
         return tr;
@@ -134,7 +134,7 @@ public class ClientWelcomeServer {
         } catch (UnknownHostException uhe) {
             System.out.println(uhe.getMessage());
         } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
+            System.out.println(ioe.getMessage() + " dans ClientWelcomeServer recupererPairs");
         }
 
         return retour;
@@ -148,7 +148,7 @@ public class ClientWelcomeServer {
            } catch (UnknownHostException uhe) {
                System.err.println(uhe.getMessage());
            } catch (IOException ioe) {
-               System.err.println(ioe.getMessage());
+               System.err.println(ioe.getMessage() + " dans ClientWelcomeServer etablirConnexion");
            }
 
            return sock;
@@ -160,7 +160,7 @@ public class ClientWelcomeServer {
         try {
             entreeLue = entree.readLine();
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            System.err.println(ioe.getMessage() + " lireMessage de ClientWelcomeServer");
         }
         return entreeLue;
     }
