@@ -126,9 +126,11 @@ public class Pair implements Runnable {
         ClientWelcomeServer clWelcome = new ClientWelcomeServer(portWelcome, adresseWelcome);
 
         Pair pair = new Pair(clHash, clWelcome);
-        System.out.println(pair.getTableRoutage() == null);
+
+        System.out.println("La table de routage : " + pair.getTableRoutage());
+
         for (LigneRoutage ligne : pair.getTableRoutage()) {
-            System.out.println(ligne.toString());
+            System.out.println(ligne);
         }
 
 
