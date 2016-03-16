@@ -151,6 +151,7 @@ public class PairThread implements Runnable {
 							this.tableRoutage.get(0).setIpDestinataire(ipemet);
 							out.println(this.hash + ":" + ip);
 							out.println(this.hash + ":" + ip);
+							System.out.println(this.hash + ":" + ip);
 						}
 						else if (hemet > this.hash) {
 							if (hemet < hsucc) {

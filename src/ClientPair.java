@@ -48,7 +48,7 @@ public class ClientPair {
          */
         try (
             Socket sock = etablirConnexion();
-            PrintWriter    sortie = new PrintWriter(sock.getOutputStream(), true);
+            PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
         {
             sortie.println(mess);
