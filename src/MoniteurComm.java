@@ -70,7 +70,7 @@ public class MoniteurComm implements Runnable {
     @Override
     public void run() {
         try (
-        ServerSocket serveur = new ServerSocket(this.port);
+        ServerSocket serveur = new ServerSocket(8002);
         ) {
             try (
             Socket s = serveur.accept();
@@ -83,7 +83,7 @@ public class MoniteurComm implements Runnable {
                  * On récupère les pairs que l'on connaît et on les retourne
                  * ligne par ligne au MonitorServer
                  */
-                String messageRecu = in.readLine();
+                String messageRecu = this.lireMessage(in);
                 if (messageRecu != null && messageRecu.equals("rt?")) {
                     List<String> pairsConnus = this.donnerPairs();
                     for (String strPair: pairsConnus) {
@@ -99,5 +99,16 @@ public class MoniteurComm implements Runnable {
             System.err.println("Exception à la création du SocketServer");
             System.err.println(ioe.getMessage());
         }
+    }
+
+
+    public String lireMessage(BufferedReader entree) {
+        String entreeLue = "";
+        try {
+            entreeLue = entree.readLine();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+        return entreeLue;
     }
 }
