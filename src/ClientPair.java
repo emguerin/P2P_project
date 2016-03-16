@@ -47,7 +47,7 @@ public class ClientPair {
          * messages + facilement
          */
         try (
-            Socket sock = etablirConnexion();
+            Socket sock = new Socket(this.adresseServeur, this.port);
             PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
         {
