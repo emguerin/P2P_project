@@ -120,8 +120,8 @@ public class ClientWelcomeServer {
             String predecesseur = this.lireMessage(entree);
             String successeur   = this.lireMessage(entree);
 
-            pred = new LigneRoutage(predecesseur);
-            succ = new LigneRoutage(successeur);
+            pred = new LigneRoutage(hash + ":" + predecesseur);
+            succ = new LigneRoutage(hash + ":" + successeur);
 
         } catch (UnknownHostException uhe) {
             System.out.println(uhe.getMessage());
