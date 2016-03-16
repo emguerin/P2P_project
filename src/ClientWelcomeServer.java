@@ -89,6 +89,9 @@ public class ClientWelcomeServer {
 
                 // succ et pred sont instanciés dans la fonctions
                 this.recupererPairs(succ, pred, ipMembre, notreIP, hash);
+                System.out.println("Dans ClientWelcomeServer : communiquer() :");
+                System.out.println("pred : " + pred);
+                System.out.println("succ : " + succ);
                 tr.add(pred);
                 tr.add(succ);
             }
