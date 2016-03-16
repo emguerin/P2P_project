@@ -88,12 +88,12 @@ public class ClientWelcomeServer {
                 LigneRoutage pred = null;
 
                 // succ et pred sont instanciés dans la fonctions
-                this.recupererPairs(succ, pred, ipMembre, notreIP, hash);
+                List<LigneRoutage> liste = this.recupererPairs(succ, pred, ipMembre, notreIP, hash);
                 System.out.println("Dans ClientWelcomeServer : communiquer() :");
-                System.out.println("pred : " + pred);
-                System.out.println("succ : " + succ);
-                tr.add(pred);
-                tr.add(succ);
+                System.out.println("pred : " + liste.get(0));
+                System.out.println("succ : " + liste.get(1));
+                tr.add(liste.get(0));
+                tr.add(liste.get(1));
             }
         } catch (UnknownHostException uhe) {
             System.err.println(uhe.getMessage());
@@ -105,7 +105,8 @@ public class ClientWelcomeServer {
     }
 
 
-    private void recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip, String notreIP, int hash) {
+    private List<LigneRoutage> recupererPairs(LigneRoutage succ, LigneRoutage pred, String ip, String notreIP, int hash) {
+        List<LigneRoutage> retour = new ArrayList<LigneRoutage>();
 
         try (
         Socket sock = new Socket(ip, 2016);
@@ -126,11 +127,15 @@ public class ClientWelcomeServer {
             pred = new LigneRoutage(hash + ":" + predecesseur);
             succ = new LigneRoutage(hash + ":" + successeur);
 
+            retour.add(pred);
+            retour.add(succ);
         } catch (UnknownHostException uhe) {
             System.out.println(uhe.getMessage());
         } catch (IOException ioe) {
             System.out.println(ioe.getMessage());
         }
+
+        return retour;
     }
 
 
