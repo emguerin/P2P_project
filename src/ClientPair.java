@@ -19,7 +19,7 @@ public class ClientPair {
         try {
             fluxSortie = sock.getOutputStream();
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            System.err.println(ioe.getMessage() + " 5");
         }
 
         PrintWriter    sortie = new PrintWriter(fluxSortie, true);
@@ -54,7 +54,7 @@ public class ClientPair {
             sortie.println(mess);
         } 
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            System.err.println(ioe.getMessage() + " 3");
         }
     }
     
@@ -64,9 +64,9 @@ public class ClientPair {
            try {
                sock = new Socket(this.adresseServeur, this.port);
            } catch (UnknownHostException uhe) {
-               System.err.println(uhe.getMessage());
+               System.err.println(uhe.getMessage() + " 4");
            } catch (IOException ioe) {
-               System.err.println(ioe.getMessage());
+               System.err.println(ioe.getMessage() + " 6");
            }
 
            return sock;
@@ -77,7 +77,7 @@ public class ClientPair {
         try {
             entreeLue = entree.readLine();
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            System.err.println(ioe.getMessage() + " 7");
         }
         return entreeLue;
     }

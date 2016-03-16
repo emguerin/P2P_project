@@ -96,7 +96,7 @@ public class ClientWelcomeServer {
                 tr.add(liste.get(1));
             }
         } catch (UnknownHostException uhe) {
-            System.err.println(uhe.getMessage());
+            System.err.println(uhe.getMessage() + " 9");
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage() + " dans communiquer ClientWelcomeServer");
         }

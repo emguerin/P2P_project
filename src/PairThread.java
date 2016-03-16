@@ -237,7 +237,7 @@ public class PairThread implements Runnable {
 		}
 		catch (IOException e) {
 			System.err.println("Erreur pendant une communication (PairThread)");
-			System.err.println(e.getMessage());
+			System.err.println(e.getMessage() + " 8");
 			System.exit(1);
 		}
 	}

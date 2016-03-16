@@ -21,7 +21,7 @@ public class Pair implements Runnable {
         try {
             this.ip = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException uhe) {
-            System.err.println(uhe.getMessage());
+            System.err.println(uhe.getMessage() + " 2");
         }
 
         //Communication avec le HashServer
