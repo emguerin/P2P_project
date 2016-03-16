@@ -144,6 +144,7 @@ public class PairThread implements Runnable {
 						String ipemet = words[2];
 
 						if (this.hash == hsucc) {
+							System.out.println("je suis là 1");
 							// cas où il y avait une seule personne sur le réseau
 							this.tableRoutage.get(1).setHashDestinataire(hemet);
 							this.tableRoutage.get(0).setHashDestinataire(hemet);
@@ -155,6 +156,7 @@ public class PairThread implements Runnable {
 						}
 						else if (hemet > this.hash) {
 							if (hemet < hsucc) {
+								System.out.println("je suis là 2");
 								// emetteur entre ce pair et son successeur
 								out.println(this.hash + ":" + ip);
 								out.println(hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
@@ -170,6 +172,7 @@ public class PairThread implements Runnable {
 								this.tableRoutage.get(1).setIpDestinataire(ipemet);
 							}
 							else {
+								System.out.println("je suis là 3");
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
 								clPair.transmettreMessage(inputLine);
 								out.println("message transmis au successeur.");
@@ -177,6 +180,7 @@ public class PairThread implements Runnable {
 						}
 						else if (hemet < this.hash) {
 							if (hemet > hpred) {
+								System.out.println("je suis là 4");
 								// emetteur entre ce pair et son predecesseur
 								out.println(hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
 								out.println(this.hash + ":" + ip);
@@ -192,6 +196,7 @@ public class PairThread implements Runnable {
 								this.tableRoutage.get(0).setIpDestinataire(ipemet);
 							}
 							else {
+								System.out.println("je suis là 5");
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
 								clPair.transmettreMessage(inputLine);
 								out.println("message transmis au predecesseur.");
