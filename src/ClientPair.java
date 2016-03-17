@@ -48,6 +48,7 @@ public class ClientPair {
          */
         try 
             (
+                System.out.print("teste transmettre message");
                 Socket sock = new Socket(this.adresseServeur, this.port+1);
                 // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
