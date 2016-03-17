@@ -35,13 +35,13 @@ public class ClientHashServer {
         BufferedReader entree = new BufferedReader(new InputStreamReader(fluxEntree));
         PrintWriter    sortie = new PrintWriter(fluxSortie, true);
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Rentrez votre adresse IP :");
-
-        String msg;
+        // Scanner sc = new Scanner(System.in);
+        // System.out.println("Rentrez votre adresse IP :");
+        String msg = InetAddress.getLocalHost().getHostAddress();
+        
         String entreeLue;
       
-        msg = sc.nextLine();
+        // msg = sc.nextLine();
 
         // On écrit sur la sortie
         sortie.println(msg);
