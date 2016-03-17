@@ -49,7 +49,7 @@ public class ClientPair {
         System.out.println("teste transmettre message");
         try 
             (                
-                Socket sock = new Socket(this.adresseServeur, this.port+1);
+                Socket sock = this.etablirConnexion();
                 // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
         {
