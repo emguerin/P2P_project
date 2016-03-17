@@ -43,7 +43,7 @@ public class ClientWelcomeServer {
             // System.out.println("Demandez à entrer dans le réseau P2P en envoyant un message de la forme yo:hash(ip):ip");
 
             // String msg;
-            // String entreeLue;
+            String entreeLue;
 
             // msg = sc.nextLine();
 
