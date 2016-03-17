@@ -164,21 +164,26 @@ public class PairThread implements Runnable {
 								out.println(this.hash + ":" + ip);
 								out.println(hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
 
-								///////////////////////////////////////////////
-								// PREVENIR SUCC DU CHGMT DE SON PREDECESSEUR /
-								///////////////////////////////////////////////
+
 								String msg = "ctr:0:" + hemet + ":" + ipemet;
-								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
-								clPair.transmettreMessage(msg);
+								String ipdest = this.tableRoutage.get(1).getIpDestinataire();
+
 
 								this.tableRoutage.get(1).setHashDestinataire(hemet);
 								this.tableRoutage.get(1).setIpDestinataire(ipemet);
+
+								this.sock.shutdownInput();
+								this.sock.shutdownOutput();
+								this.sock.close();
+								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(1).getIpDestinataire());
+								clPair.transmettreMessage(msg);
+
 							}
 							else {
 								System.out.println("je suis là 3");
 								int port = this.sock.getPort();
-								out.close();
-								in.close();
+								this.sock.shutdownInput();
+								this.sock.shutdownOutput();
 								this.sock.close();
 								ClientPair clPair = new ClientPair(port , this.tableRoutage.get(1).getIpDestinataire());
 								String msg = inputLine;
@@ -197,21 +202,27 @@ public class PairThread implements Runnable {
 								out.println(hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
 								out.println(this.hash + ":" + ip);
 
-								///////////////////////////////////////////////
-								// PREVENIR PREDECESSEUR DU CHGMT DE SON SUCCESSEUR /
-								///////////////////////////////////////////////
 								String msg = "ctr:1:" + hemet + ":" + ipemet;
-								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
-								clPair.transmettreMessage(msg);
+
+								String ipdest = this.tableRoutage.get(0).getIpDestinataire();
 
 								this.tableRoutage.get(0).setHashDestinataire(hemet);
 								this.tableRoutage.get(0).setIpDestinataire(ipemet);
+
+								this.sock.shutdownInput();
+								this.sock.shutdownOutput();
+								this.sock.close();
+
+								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
+								clPair.transmettreMessage(msg);
+
+						
 							}
 							else {
 								System.out.println("je suis là 5");
 								int port = this.sock.getPort();
-								out.close();
-								in.close();
+								this.sock.shutdownInput();
+								this.sock.shutdownOutput();
 								this.sock.close();
 								ClientPair clPair = new ClientPair(port , this.tableRoutage.get(0).getIpDestinataire());
 								String msg = inputLine;
