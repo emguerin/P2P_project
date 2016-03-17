@@ -177,6 +177,8 @@ public class PairThread implements Runnable {
 							else {
 								System.out.println("je suis là 3");
 								int port = this.sock.getPort();
+								out.close();
+								in.close();
 								this.sock.close();
 								ClientPair clPair = new ClientPair(port , this.tableRoutage.get(1).getIpDestinataire());
 								String msg = inputLine;
@@ -208,6 +210,8 @@ public class PairThread implements Runnable {
 							else {
 								System.out.println("je suis là 5");
 								int port = this.sock.getPort();
+								out.close();
+								in.close();
 								this.sock.close();
 								ClientPair clPair = new ClientPair(port , this.tableRoutage.get(0).getIpDestinataire());
 								String msg = inputLine;
