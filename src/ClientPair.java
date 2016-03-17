@@ -46,9 +46,9 @@ public class ClientPair {
          * Mise en place des flux et des buffers pour écrire/recevoir les
          * messages + facilement
          */
+        System.out.println("teste transmettre message");
         try 
-            (
-                System.out.print("teste transmettre message");
+            (                
                 Socket sock = new Socket(this.adresseServeur, this.port+1);
                 // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
@@ -56,6 +56,7 @@ public class ClientPair {
 
             // Socket sock = new Socket(this.adresseServeur, this.port);
             // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
+            System.out.println("entré dans try de transmettre message");
             System.out.print(mess);
             // sortie.println(mess);
         } 
