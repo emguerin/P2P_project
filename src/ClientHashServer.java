@@ -37,7 +37,13 @@ public class ClientHashServer {
 
         // Scanner sc = new Scanner(System.in);
         // System.out.println("Rentrez votre adresse IP :");
-        String msg = InetAddress.getLocalHost().getHostAddress();
+        String msg = null;
+        try {
+            msg = InetAddress.getLocalHost().getHostAddress();
+        }
+        catch (UnknownHostException e) {
+            System.out.println(e.getMessage());
+        }
         
         String entreeLue;
       
