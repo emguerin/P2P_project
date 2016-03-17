@@ -50,7 +50,7 @@ public class ClientPair {
         try 
             (                
                 Socket sock = this.etablirConnexion();
-                // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
+                PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
         {
 
@@ -58,7 +58,7 @@ public class ClientPair {
             // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             System.out.println("entré dans try de transmettre message");
             System.out.print(mess);
-            // sortie.println(mess);
+            sortie.println(mess);
         } 
         catch (IOException ioe) {
             System.err.println(ioe.getMessage() + " 3");
