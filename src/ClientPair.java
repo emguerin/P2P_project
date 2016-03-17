@@ -69,7 +69,7 @@ public class ClientPair {
     public Socket etablirConnexion() {
 	       Socket sock = null;
            try {
-               sock = new Socket(this.adresseServeur, this.port);
+               sock = new Socket(this.adresseServeur, 2016);
            } catch (UnknownHostException uhe) {
                System.err.println(uhe.getMessage() + " 4");
            } catch (IOException ioe) {
