@@ -44,9 +44,9 @@ public class ClientHashServer {
         catch (UnknownHostException e) {
             System.out.println(e.getMessage());
         }
-        
+
         String entreeLue;
-      
+
         // msg = sc.nextLine();
 
         // On écrit sur la sortie

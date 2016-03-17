@@ -95,8 +95,7 @@ public class Pair implements Runnable {
         try (ServerSocket serverSock = new ServerSocket(this.port);) {
             //récupération des demandes Client
             while(true) {
-                System.out.print("serveur en attente prochaine connexion");
-                try 
+                try
                 {
                     Socket sock = serverSock.accept();
                     // à chaque client accepté, on crée un nouveau PairThread et on le lance (lance sa méthode run())
@@ -167,7 +166,6 @@ public class Pair implements Runnable {
 
             clPair.communiquer(pair.getIp(), h);
 
-        } //S'ASSURER QUE, UNE FOIS COMMUNICATION TERMINEE AVEC UN PAIR, CAPABLE D'EN RECONTACTER UN AUTRE
-          // => A priori, ça me semble être le cas là
+        }
     }
 }

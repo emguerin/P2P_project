@@ -30,20 +30,6 @@ public class PairThread implements Runnable {
 
     }
 
- /*   // Obtenir le hash du successeur du pair de hash h dans le réseau
-    // Ne doit pas être appelé si le réseau est vide
-    private static int getSucc(int h, HashMap<Integer,String> net) {
-
-		TreeSet<Integer> keys = new TreeSet<Integer>(net.keySet());
-		Integer h2 = keys.higher(h);
-		if (h2 != null)
-		    return h2;
-
-		return keys.first();
-
-    }*/
-
-
     /*
      * Fonction pour retourner les pairs que l'on connaît (dans tableRoutage)
      */
@@ -77,18 +63,6 @@ public class PairThread implements Runnable {
 					}
 
 					break;
-
-					////////////////////
-					// INUTILE /////
-					////////////////////
-					/*case "a+":
-					// fin de conversation
-
-					out.println("Good bye !");
-					this.sock.close();
-					System.exit(1);
-					/
-					break;*/
 
 					case "msg":
 					// message du pair
@@ -144,7 +118,6 @@ public class PairThread implements Runnable {
 						String ipemet = words[2];
 
 						if (this.hash == hsucc) {
-							System.out.println("je suis là 1");
 							// cas où il y avait une seule personne sur le réseau
 							this.tableRoutage.get(1).setHashDestinataire(hemet);
 							this.tableRoutage.get(0).setHashDestinataire(hemet);
@@ -156,11 +129,6 @@ public class PairThread implements Runnable {
 						}
 						else if (hemet > this.hash) {
 							if (hemet < hsucc || (hemet > hsucc && this.hash > hsucc)) {
-								System.out.println("je suis là 2");
-								// emetteur entre ce pair et son successeur
-								// ClientPair clPair2 = new ClientPair(this.sock.getPort(), ipemet);
-								// clPair2.transmettreMessage("" + this.hash + ":" + ip);
-								// clPair2.transmettreMessage("" + hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
 								out.println(this.hash + ":" + ip);
 								out.println(hsucc + ":" + this.tableRoutage.get(1).getIpDestinataire());
 
@@ -180,7 +148,6 @@ public class PairThread implements Runnable {
 
 							}
 							else {
-								System.out.println("je suis là 3");
 								int port = this.sock.getPort();
 								this.sock.shutdownInput();
 								this.sock.shutdownOutput();
@@ -194,7 +161,6 @@ public class PairThread implements Runnable {
 						}
 						else if (hemet < this.hash) {
 							if (hemet > hpred || (hemet < hpred && this.hash < hpred)) {
-								System.out.println("je suis là 4");
 								// emetteur entre ce pair et son predecesseur
 								// ClientPair clPair2 = new ClientPair(this.sock.getPort(), ipemet);
 								// clPair2.transmettreMessage("" + hpred + ":" + this.tableRoutage.get(0).getIpDestinataire());
@@ -216,10 +182,9 @@ public class PairThread implements Runnable {
 								ClientPair clPair = new ClientPair(this.sock.getPort(), this.tableRoutage.get(0).getIpDestinataire());
 								clPair.transmettreMessage(msg);
 
-						
+
 							}
 							else {
-								System.out.println("je suis là 5");
 								int port = this.sock.getPort();
 								this.sock.shutdownInput();
 								this.sock.shutdownOutput();

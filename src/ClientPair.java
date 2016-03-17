@@ -28,7 +28,7 @@ public class ClientPair {
         System.out.println("Entrez le contenu du message que vous souhaitez envoyer ");
 
         String msg;
-        
+
         msg = sc.nextLine();
 
         msg = "msg:"+h+":"+ip+":"+msg;
@@ -41,30 +41,27 @@ public class ClientPair {
      * Méthode appelée pour envoyer le message donné en paramètre à son destinataire
      *
      */
-    public void transmettreMessage(String mess) {        
+    public void transmettreMessage(String mess) {
         /*
          * Mise en place des flux et des buffers pour écrire/recevoir les
          * messages + facilement
          */
         System.out.println("teste transmettre message");
-        try 
-            (                
+        try
+            (
                 Socket sock = this.etablirConnexion();
                 PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             )
         {
-
-            // Socket sock = new Socket(this.adresseServeur, this.port);
-            // PrintWriter sortie = new PrintWriter(sock.getOutputStream(), true);
             System.out.println("entré dans try de transmettre message");
             System.out.print(mess);
             sortie.println(mess);
-        } 
+        }
         catch (IOException ioe) {
             System.err.println(ioe.getMessage() + " 3");
         }
     }
-    
+
 
     public Socket etablirConnexion() {
 	       Socket sock = null;

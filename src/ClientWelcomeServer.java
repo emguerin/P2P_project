@@ -39,15 +39,7 @@ public class ClientWelcomeServer {
         BufferedReader entree = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         PrintWriter    sortie = new PrintWriter(sock.getOutputStream(), true);
         ){
-            // Scanner sc = new Scanner(System.in);
-            // System.out.println("Demandez à entrer dans le réseau P2P en envoyant un message de la forme yo:hash(ip):ip");
-
-            // String msg;
             String entreeLue;
-
-            // msg = sc.nextLine();
-
-            // On écrit sur la sortie
             String msg = "yo:" + hash + ":" + notreIP;
             sortie.println(msg);
 
